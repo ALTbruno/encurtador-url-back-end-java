@@ -15,7 +15,6 @@ public class UrlService {
 	private UrlRepository urlRepository;
 	private SequenceGeneratorService sequenceGeneratorService;
 
-
 	@Autowired
 	public UrlService(UrlRepository urlRepository, SequenceGeneratorService sequenceGeneratorService) {
 		this.urlRepository = urlRepository;
@@ -23,6 +22,7 @@ public class UrlService {
 	}
 
 	public URL encurtarUrl(URL url) {
+
 		UrlValidator urlValidator = new UrlValidator();
 		if (urlValidator.isValid(url.getBigUrl())) {
 
@@ -34,5 +34,10 @@ public class UrlService {
 			url.setShortUrl(urlServer.concat(hash));
 		}
 		return urlRepository.save(url);
+	}
+
+	public URL buscarHash(String hash) {
+		URL url = urlRepository.findByHash(hash);
+		return urlRepository.findByHash(url.getHash());
 	}
 }

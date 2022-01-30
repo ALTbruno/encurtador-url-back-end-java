@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UrlRepository extends MongoRepository<URL, Long> {
+
+	URL findByBigUrl(String bigUrl);
+
+	URL findByHash(String hash);
 }
