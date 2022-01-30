@@ -8,16 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @Service
 public class UrlService {
 
 	private UrlRepository urlRepository;
+	private SequenceGeneratorService sequenceGeneratorService;
+
 
 	@Autowired
-	public UrlService(UrlRepository urlRepository) {
+	public UrlService(UrlRepository urlRepository, SequenceGeneratorService sequenceGeneratorService) {
 		this.urlRepository = urlRepository;
+		this.sequenceGeneratorService = sequenceGeneratorService;
 	}
 
 	public URL encurtarUrl(URL url) {
@@ -27,10 +29,10 @@ public class UrlService {
 			String urlServer = "http://localhost:8080/";
 			String hash = Hashing.murmur3_32_fixed().hashString(url.getBigUrl(), StandardCharsets.UTF_8).toString();
 
+			url.setId(sequenceGeneratorService.getSequenceNumber(URL.SEQUENCE_NAME));
 			url.setHash(hash);
 			url.setShortUrl(urlServer.concat(hash));
 		}
 		return urlRepository.save(url);
 	}
-
 }
