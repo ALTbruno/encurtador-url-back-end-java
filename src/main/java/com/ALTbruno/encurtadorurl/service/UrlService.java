@@ -30,16 +30,14 @@ public class UrlService {
 		UrlValidator urlValidator = new UrlValidator();
 
 		if (urlValidator.isValid(url.getBigUrl())) {
-
-			String hash = Hashing.murmur3_32_fixed().hashString(url.getBigUrl(), StandardCharsets.UTF_8).toString();
-
 			if (urlRepository.existsByBigUrl(url.getBigUrl())) {
-				url.setId(urlRepository.findByHash(hash).get().getId());
-				url.setBigUrl(urlRepository.findByHash(hash).get().getBigUrl());
-				url.setHash(urlRepository.findByHash(hash).get().getHash());
-				url.setShortUrl(urlRepository.findByHash(hash).get().getShortUrl());
+				url.setId(urlRepository.findByBigUrl(url.getBigUrl()).get().getId());
+				url.setBigUrl(urlRepository.findByBigUrl(url.getBigUrl()).get().getBigUrl());
+				url.setHash(urlRepository.findByBigUrl(url.getBigUrl()).get().getHash());
+				url.setShortUrl(urlRepository.findByBigUrl(url.getBigUrl()).get().getShortUrl());
 				return url;
 			} else {
+				String hash = Hashing.murmur3_32_fixed().hashString(url.getBigUrl(), StandardCharsets.UTF_8).toString();
 				url.setId(sequenceGeneratorService.getSequenceNumber(URL.SEQUENCE_NAME));
 				url.setHash(hash);
 				url.setShortUrl(urlServer.concat(hash));

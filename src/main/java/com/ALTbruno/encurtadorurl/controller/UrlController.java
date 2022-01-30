@@ -4,8 +4,7 @@ import com.ALTbruno.encurtadorurl.model.URL;
 import com.ALTbruno.encurtadorurl.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("")
@@ -24,8 +23,11 @@ public class UrlController {
 	}
 
 	@GetMapping("/{hash}")
-	public Optional<URL> buscarPeloHash(@PathVariable String hash) {
-		return urlService.buscarHash(hash);
+	public RedirectView redirecionar(@PathVariable String hash) {
+		RedirectView redirectView = new RedirectView();
+		String url = urlService.buscarHash(hash).get().getBigUrl();
+		redirectView.setUrl(url);
+		return redirectView;
 	}
 
 }

@@ -11,5 +11,7 @@ public interface UrlRepository extends MongoRepository<URL, Long> {
 
 	boolean existsByBigUrl(String bigUrl);
 
+	Optional<URL> findByBigUrl(String bigUrl);
+
 	Optional<URL> findByHash(String hash);
 }
