@@ -5,6 +5,8 @@ import com.ALTbruno.encurtadorurl.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("")
 public class UrlController {
@@ -22,7 +24,7 @@ public class UrlController {
 	}
 
 	@GetMapping("/{hash}")
-	public URL buscarPeloHash(@PathVariable String hash) {
+	public Optional<URL> buscarPeloHash(@PathVariable String hash) {
 		return urlService.buscarHash(hash);
 	}
 

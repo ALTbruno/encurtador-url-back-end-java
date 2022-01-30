@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @Service
 public class UrlService {
@@ -23,21 +24,35 @@ public class UrlService {
 
 	public URL encurtarUrl(URL url) {
 
+
+		String urlServer = "http://localhost:8080/";
+
 		UrlValidator urlValidator = new UrlValidator();
+
 		if (urlValidator.isValid(url.getBigUrl())) {
 
-			String urlServer = "http://localhost:8080/";
 			String hash = Hashing.murmur3_32_fixed().hashString(url.getBigUrl(), StandardCharsets.UTF_8).toString();
 
-			url.setId(sequenceGeneratorService.getSequenceNumber(URL.SEQUENCE_NAME));
-			url.setHash(hash);
-			url.setShortUrl(urlServer.concat(hash));
+			if (urlRepository.existsByBigUrl(url.getBigUrl())) {
+				url.setId(urlRepository.findByHash(hash).get().getId());
+				url.setBigUrl(urlRepository.findByHash(hash).get().getBigUrl());
+				url.setHash(urlRepository.findByHash(hash).get().getHash());
+				url.setShortUrl(urlRepository.findByHash(hash).get().getShortUrl());
+				return url;
+			} else {
+				url.setId(sequenceGeneratorService.getSequenceNumber(URL.SEQUENCE_NAME));
+				url.setHash(hash);
+				url.setShortUrl(urlServer.concat(hash));
+			}
+
 		}
 		return urlRepository.save(url);
 	}
 
-	public URL buscarHash(String hash) {
-		URL url = urlRepository.findByHash(hash);
+	public Optional<URL> buscarHash(String hash) {
+
+		URL url = urlRepository.findByHash(hash).get();
+
 		return urlRepository.findByHash(url.getHash());
 	}
 }

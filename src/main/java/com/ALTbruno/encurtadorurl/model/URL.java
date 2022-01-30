@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 @Document(collection = "URLS")
 public class URL {
 
@@ -11,6 +13,7 @@ public class URL {
 	public static final String SEQUENCE_NAME = "url_sequence";
 
 	@Id
+	@NotNull
 	private Long id;
 
 	private String bigUrl;

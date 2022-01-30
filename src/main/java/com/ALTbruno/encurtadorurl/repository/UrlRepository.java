@@ -4,10 +4,12 @@ import com.ALTbruno.encurtadorurl.model.URL;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UrlRepository extends MongoRepository<URL, Long> {
 
-	URL findByBigUrl(String bigUrl);
+	boolean existsByBigUrl(String bigUrl);
 
-	URL findByHash(String hash);
+	Optional<URL> findByHash(String hash);
 }
