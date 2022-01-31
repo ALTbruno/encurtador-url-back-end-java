@@ -25,7 +25,7 @@ public class UrlService {
 	public URL encurtarUrl(URL url) {
 
 
-		String urlServer = "http://localhost:8080/";
+		String urlServer = "https://br4.herokuapp.com/";
 
 		UrlValidator urlValidator = new UrlValidator();
 
