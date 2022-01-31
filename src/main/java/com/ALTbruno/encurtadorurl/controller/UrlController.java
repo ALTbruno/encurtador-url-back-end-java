@@ -17,6 +17,11 @@ public class UrlController {
 		this.urlService = urlService;
 	}
 
+	@GetMapping
+	public String on(){
+		return "Hello there! The server is ON.";
+	}
+
 	@PostMapping
 	public URL encurtar(@RequestBody URL url) {
 		return urlService.encurtarUrl(url);
